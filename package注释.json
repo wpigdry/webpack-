@@ -5,10 +5,16 @@
     "main": "index.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
+
         // 执行build命令关联webpack.conf.js，从而执行文件中的打包命令进行打包
         // build 的值为运行的脚本 ---  比如 npm run build 相当于终端执行webpack
         // --config  配置   指向 =》 build/webpack.conf.js（配置指向的文件）
-    "build": "webpack --config build/webpack.conf.js"
+    "build": "webpack --config build/webpack.conf.js",
+
+    // 配置启动服务配置  执行webpack-dev-server命令启动服务
+    // --open 自动在浏览器打开启动的服务
+    // --progress 终端展示打包的进度
+    "dev": "webpack-dev-server --progress --open --config build/webpack.conf.js"
     },
     "repository": {
       "type": "git",
