@@ -26,6 +26,27 @@ module.exports = {
         filename: '[name].[hash:8].js'
         // filename: '[name].[chunkhash:8].js'
     },
+    // 用来配置loader（转换器）
+    // loader让webpack拥有解析和加载非javaScript文件的能力
+    // 比方解析加载 css jsx tsx 图片
+    module: {
+        rules: [
+            {
+                test: /\.css$/, // .css结尾的文件
+                use: [
+                    'css-loader' // 使用css-loader解析.css结尾的文件
+                ]
+            },
+            {
+                test: /\.scss$/, // .scss结尾的文件
+                use: [
+                    'sass-loader', // 使用sass-loader解析.scss结尾的文件
+                    'css-loader'
+                ]
+            }
+        ]
+    },
+    // 使用插件
     plugins: [
         // 实例化使用
 
