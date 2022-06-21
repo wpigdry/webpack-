@@ -1,9 +1,13 @@
 // webpack 基于node node基于commonjs
 
+// 配置html压缩规则
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// 清理dist打包文件
 const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin'); // 有的旧版本不需要解构，直接const常量使用
+// css抽离
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
@@ -34,14 +38,24 @@ module.exports = {
             {
                 test: /\.css$/, // .css结尾的文件
                 use: [
+                    // 会对 @import 和 url() 进行处理
+                    // 默认生成一个数组存放处理后的样式字符串，并将其导出。
+                    MiniCssExtractPlugin.loader, // 放在loader之前加载
                     'css-loader' // 使用css-loader解析.css结尾的文件
                 ]
             },
             {
                 test: /\.scss$/, // .scss结尾的文件
+                // 解析.scss结尾的文件
                 use: [
-                    'sass-loader', // 使用sass-loader解析.scss结尾的文件
-                    'css-loader'
+                    MiniCssExtractPlugin.loader, // 放在loader之前加载
+                    // 加载有顺序，css-loader放在sass-loader之前
+                    // 解析css文件的css
+                    'css-loader',
+                    // 解析后的css加入到html的style标签
+                    // style-loader的作用是把 CSS 插入到 DOM 中，就是处理css-loader导出的模块数组，然后将样式通过style标签或者其他形式插入到DOM中。
+                    // 'style-loader',
+                    'sass-loader' //将scss编译成css
                 ]
             }
         ]
@@ -60,8 +74,9 @@ module.exports = {
             template: 'public/index.html',
             // 用于设置打包输出后的html模板名称
             filename: 'main.html',
-            // 设置 js 文件是否插入html   css是否插入看后续视频---------
-            inject: true, // 默认为true  false会删除html中的script标签
+            // 设置 js 这个打包文件是否插入html
+            // false会删除html中--webpack打包后引入的script标签(src指向打包后的js)，但不会删除html本身自有的script标签
+            inject: true, // 默认为true  
             // 配置压缩规则
             minify: {
                 html5: true, // 根据 HTML5 规范解析输入
@@ -73,6 +88,10 @@ module.exports = {
                 removeEmptyAttributes: true, // 删除所有具有纯空格值的属性
                 removeOptionalTags: true // 删除可选标签-- 它只去除 HTML、HEAD、BODY、THEAD、TBODY 和 TFOOT 元素的结束标签。 例如：只有末尾 </head>
             },
+        }),
+        new MiniCssExtractPlugin({
+            // 设置打包后的文件名称
+            filename: '[name].[hash:8].css' // 每次打包更新名称，防止get请求幂等问题
         })
     ],
     // 服务启动配置

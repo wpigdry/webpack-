@@ -1,7 +1,7 @@
 import main from './main';
 
 import './index.css';
-// import './style.scss';
+import './style.scss';
 
 // 这个是注释
 console.log(111111); // lkdsjk
