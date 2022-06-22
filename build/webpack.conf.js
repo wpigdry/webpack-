@@ -40,22 +40,36 @@ module.exports = {
                 use: [
                     // 会对 @import 和 url() 进行处理
                     // 默认生成一个数组存放处理后的样式字符串，并将其导出。
-                    MiniCssExtractPlugin.loader, // 放在loader之前加载
-                    'css-loader' // 使用css-loader解析.css结尾的文件
+                    MiniCssExtractPlugin.loader, // 放在loader之前加载  css抽离
+                    'css-loader', // 使用css-loader解析.css结尾的文件
+                    'postcss-loader'
                 ]
             },
             {
                 test: /\.scss$/, // .scss结尾的文件
                 // 解析.scss结尾的文件
                 use: [
-                    MiniCssExtractPlugin.loader, // 放在loader之前加载
+                    MiniCssExtractPlugin.loader, // 放在loader之前加载   css抽离
                     // 加载有顺序，css-loader放在sass-loader之前
                     // 解析css文件的css
                     'css-loader',
                     // 解析后的css加入到html的style标签
                     // style-loader的作用是把 CSS 插入到 DOM 中，就是处理css-loader导出的模块数组，然后将样式通过style标签或者其他形式插入到DOM中。
                     // 'style-loader',
-                    'sass-loader' //将scss编译成css
+                    // 'sass-loader', //将scss编译成css
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    'postcss-loader'
+                    // {
+                    //     loader: 'postcss-loader',
+                    //     options: {
+                    //         sourceMap: true
+                    //     }
+                    // }
                 ]
             }
         ]
