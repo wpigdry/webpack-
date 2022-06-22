@@ -1,5 +1,6 @@
 import main from './main';
-
+import Vue from 'vue';
+import App from './App.vue';
 import './index.css';
 import './style.scss';
 
@@ -7,3 +8,25 @@ import './style.scss';
 console.log(111111); // lkdsjk
 console.log(2666666); 
 console.log(process.env);
+
+new Vue({
+     // el代表document.qu取真实dom
+    // 下面的模块都放在#app的dom中
+    el: '#app',  // 指处理html模板的盒子类名
+
+    // runtime + compiler
+    // 如果是解析字符串类型，就用这种，js类型使用render， 一般建议使用render
+    // components: {
+    //     App
+    // },
+    // template: '<App/>',  // template可以直接解析html，包括指令语法<h3>我是表情</h3>------------------------------------------
+
+    // runtime-only 性能好 会预编译，在运行编译时会先通过vue-loader转换为js，运行时直接执行, 直接运行render函数
+    // runtime + compiler运行编译时才会编译模板   指template载入模块文件
+    // runtime-only要比runtime + compiler小30%，
+
+    // runtime-only 
+    render: h => h(App)
+})
+
+// Vue.createApp(App).mount('#app')

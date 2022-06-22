@@ -8,6 +8,10 @@ const {
 } = require('clean-webpack-plugin'); // 有的旧版本不需要解构，直接const常量使用
 // css抽离
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+// 解析vue文件
+const VuePlugin = require('vue-loader/lib/plugin');
+
 const path = require('path');
 
 module.exports = {
@@ -30,7 +34,16 @@ module.exports = {
         filename: '[name].[hash:8].js'
         // filename: '[name].[chunkhash:8].js'
     },
-    // 用来配置loader（转换器）
+    resolve: {
+        // 配置省略后者名
+        extensions: ['.vue', '.js', '.json'],
+        // 配置别名
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js',
+            '@': path.resolve('src')
+        }
+    },
+    // 模块的解析规则  用来配置loader（转换器）
     // loader让webpack拥有解析和加载非javaScript文件的能力
     // 比方解析加载 css jsx tsx 图片
     module: {
@@ -63,13 +76,20 @@ module.exports = {
                             sourceMap: true
                         }
                     },
-                    'postcss-loader'
-                    // {
-                    //     loader: 'postcss-loader',
-                    //     options: {
-                    //         sourceMap: true
-                    //     }
-                    // }
+                    // 'postcss-loader'
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
+            },
+            {
+                // 解析.vue文件
+                test: /\.vue$/,
+                use: [
+                    'vue-loader'
                 ]
             }
         ]
@@ -98,11 +118,12 @@ module.exports = {
                 preserveLineBreaks: true, // 当标签之间的空格包含换行符时，总是折叠到 1 个换行符（永远不要完全删除它）
                 collapseWhitespace: true, // 移除空白符和换行符
                 removeComments: true, // 移除html的注释
-                removeAttributeQuotes: true, // 尽可能删除属性周围的引号  
+                // removeAttributeQuotes: true, // 尽可能删除属性周围的引号  
                 removeEmptyAttributes: true, // 删除所有具有纯空格值的属性
                 removeOptionalTags: true // 删除可选标签-- 它只去除 HTML、HEAD、BODY、THEAD、TBODY 和 TFOOT 元素的结束标签。 例如：只有末尾 </head>
             },
         }),
+        new VuePlugin(),
         new MiniCssExtractPlugin({
             // 设置打包后的文件名称
             filename: '[name].[hash:8].css' // 每次打包更新名称，防止get请求幂等问题
