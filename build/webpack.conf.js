@@ -36,10 +36,10 @@ module.exports = {
     },
     resolve: {
         // 配置省略后者名
-        extensions: ['.vue', '.js', '.json'],
+        extensions: ['.vue', '.js', '.json', '.tsx', '.jsx'],
         // 配置别名
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
+            '$vue': 'vue/dist/vue.esm.js',
             '@': path.resolve('src')
         }
     },
