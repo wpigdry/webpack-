@@ -1,13 +1,25 @@
 import main from './main';
 import Vue from 'vue';
-import App from './App.vue';
+import App from '@/App';
 import './index.css';
 import './style.scss';
 
-// 这个是注释
-console.log(111111); // lkdsjk
-console.log(2666666); 
-console.log(process.env);
+// // 这个是注释
+// console.log(111111); // lkdsjk
+// console.log(2666666); 
+// console.log(process.env);
+
+// const低版本浏览器解析不了
+// 要进行转义，下载配置babel  建立.babelrc文件
+// 低版本浏览器const转为var
+const ab = 'index.js'
+const y = (x) => {
+    console.log(x, '22222222222222')
+}
+y(ab)
+
+// webpack设置， 用来判断开发或生产环境
+console.log(process.env.NODE_ENV, 'llllllllllll');
 
 new Vue({
      // el代表document.qu取真实dom

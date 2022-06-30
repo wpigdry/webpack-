@@ -12,9 +12,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // 解析vue文件
 const VuePlugin = require('vue-loader/lib/plugin');
 
+// 合并module.exports导出的配置
+const merge = require('webpack-merge');
+
 const path = require('path');
 
-module.exports = {
+const dev = require('./webpack.dev');
+const online = require('./webpack.prod');
+
+const defaultConfig = {
     // 指定打包方式为 production || development
     mode: 'development',
     // 指定入口文件 关联js
@@ -39,7 +45,8 @@ module.exports = {
         extensions: ['.vue', '.js', '.json', '.tsx', '.jsx'],
         // 配置别名
         alias: {
-            '$vue': 'vue/dist/vue.esm.js',
+            // 配置下面这句开启runtime + compiler模式， runtime-only模式不需要
+            'vue$': 'vue/dist/vue.esm.js',
             '@': path.resolve('src')
         }
     },
@@ -91,6 +98,14 @@ module.exports = {
                 use: [
                     'vue-loader'
                 ]
+            },
+            {
+                test: /\.js$/,
+                use: [
+                    'babel-loader'
+                ],
+                // 排除解析node_modules的.js文件
+                exclude: /\node_modules/
             }
         ]
     },
@@ -107,7 +122,7 @@ module.exports = {
             // 因为配置文件在package.json中执行，所以文件路径是根目录下，'./'
             template: 'public/index.html',
             // 用于设置打包输出后的html模板名称
-            filename: 'main.html',
+            filename: 'index.html', // 需要设置成public的html文件同名，才可以把打包的js链接到html
             // 设置 js 这个打包文件是否插入html
             // false会删除html中--webpack打包后引入的script标签(src指向打包后的js)，但不会删除html本身自有的script标签
             inject: true, // 默认为true  
@@ -128,9 +143,13 @@ module.exports = {
             // 设置打包后的文件名称
             filename: '[name].[hash:8].css' // 每次打包更新名称，防止get请求幂等问题
         })
-    ],
-    // 服务启动配置
-    devServer: {
-        port: 9090
-    }
+    ]
+}
+
+module.exports = env => {
+    // process.env.NODE_ENV 配置中不能使用（开发中使用），只能使用传参形式
+    // const {development} = env;
+    // console.log(env, 'uuuuuuuuuuuuuu', development);
+
+    return merge(defaultConfig, env === 'development' ? dev : online)
 }

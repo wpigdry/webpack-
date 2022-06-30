@@ -15,7 +15,8 @@
     // 配置启动服务配置  执行webpack-dev-server命令启动服务
     // --open 自动在浏览器打开启动的服务
     // --progress 终端展示打包的进度
-    "dev": "webpack-dev-server --progress --open --config build/webpack.conf.js"
+    // --env 后面的是传参   传给参数对象中, 这里传development用来指代开发环境 {development: true}
+    "dev": "webpack-dev-server --env development --progress --open --config build/webpack.conf.js"
     },
     "repository": {
       "type": "git",
@@ -31,6 +32,9 @@
     "devDependencies": {
       // 自动加前缀，配合postcss-loader
       "autoprefixer": "^10.4.7",
+      // babel需要配置一个.babelrc文件
+      "babel-core": "^6.26.3", // babel-core 为6版本 babel-loader为7。  babel-core 为7 babel-loader为8   加一个版本
+      "babel-loader": "^7.1.5",
       "clean-webpack-plugin": "^4.0.0",
       "css-loader": "^6.7.1",
       "html-webpack-plugin": "^5.5.0",
@@ -39,6 +43,9 @@
       // 自动加前缀，配合autoprefixer
       "postcss-loader": "^7.0.0",
       "sass-loader": "7.3.1",
+      "vue": "^2.6.14", // vue@2.6.14 配 vue-loader@15.8.3
+      "vue-loader": "15.8.3",
+      "vue-template-compiler": "^2.6.14",
       "webpack": "^5.73.0",
       "webpack-cli": "^4.10.0",
       "webpack-dev-server": "^4.9.2"
