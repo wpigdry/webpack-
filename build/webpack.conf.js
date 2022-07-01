@@ -1,5 +1,7 @@
 // webpack 基于node node基于commonjs
 
+// webpack基于入口文件，顺着入口文件查找依赖，遇到不同的文件使用配置的loader转义，生成
+
 // 配置html压缩规则
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // 清理dist打包文件
@@ -19,6 +21,9 @@ const path = require('path');
 
 const dev = require('./webpack.dev');
 const online = require('./webpack.prod');
+
+// webpack 公共文件抽离   指多个文件引用同一个文件 （抽离文件进行缓存）
+// 多文件多入口的配置
 
 const defaultConfig = {
     // 指定打包方式为 production || development
@@ -106,6 +111,19 @@ const defaultConfig = {
                 ],
                 // 排除解析node_modules的.js文件
                 exclude: /\node_modules/
+            },
+            {
+                test: /\.(gif|png|jpe?g)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        // 当文件小于50000b，将文件转换为base64的格式，用于减少http请求
+                        // 当大于50000b，使用file-loader处理文件(自动处理，不用配置)
+                        limit: 800000,
+                        // 输出路径
+                        outputPath: './images'
+                    }
+                }]
             }
         ]
     },
