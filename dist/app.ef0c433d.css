@@ -1,0 +1,20 @@
+html {
+    /* 我是css注释 */
+    background-color: antiquewhite;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /* color: #000; */
+}
+body {
+  /* df  */
+  background-color: blueviolet;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100px; }
+

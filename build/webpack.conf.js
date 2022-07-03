@@ -14,6 +14,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // 解析vue文件
 const VuePlugin = require('vue-loader/lib/plugin');
 
+// 用来复制public的文件到dist文件夹下，使打包时可以使用
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 // 合并module.exports导出的配置
 const merge = require('webpack-merge');
 
@@ -26,8 +29,6 @@ const online = require('./webpack.prod');
 // 多文件多入口的配置
 
 const defaultConfig = {
-    // 指定打包方式为 production || development
-    mode: 'development',
     // 指定入口文件 关联js
     // 按照入口文件的依赖递归查找进行打包
     entry: {
@@ -160,7 +161,18 @@ const defaultConfig = {
         new MiniCssExtractPlugin({
             // 设置打包后的文件名称
             filename: '[name].[hash:8].css' // 每次打包更新名称，防止get请求幂等问题
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                // 将./public的资源复制到./images
+                // 定义要拷贝的源文件
+                from: './public',
+                // 定义要拷贝到的文件夹
+                to: './images', // 默认指向dist文件夹
+                // 排除  指定不需要复制的文件
+                ignore: ['*.html']
+            }
+        ])
     ]
 }
 

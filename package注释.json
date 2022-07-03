@@ -36,13 +36,19 @@
       "babel-core": "^6.26.3", // babel-core 为6版本 babel-loader为7。  babel-core 为7 babel-loader为8   加一个版本
       "babel-loader": "^7.1.5",
       "clean-webpack-plugin": "^4.0.0",
+      // 复制文件   用来复制public的文件到dist文件夹下，使打包时可以使用
+      "copy-webpack-plugin": "^5.1.2",
       "css-loader": "^6.7.1",
+      // 可以用来帮助webpack打包处理一系列的图片文件，大体积则file-loader处理，小体积url-loader
+      "file-loader": "^6.2.0",
       "html-webpack-plugin": "^5.5.0",
       // node-sass@4.14.1  sass-loader@7.3.1  搭配node v14.19.0
       "node-sass": "^4.14.1",
       // 自动加前缀，配合autoprefixer
       "postcss-loader": "^7.0.0",
       "sass-loader": "7.3.1",
+      // 解析图片，小体积转为base64格式，减少图片的get请求；大体积则file-loader处理
+      "url-loader": "^3.0.0",
       "vue": "^2.6.14", // vue@2.6.14 配 vue-loader@15.8.3
       "vue-loader": "15.8.3",
       "vue-template-compiler": "^2.6.14",
