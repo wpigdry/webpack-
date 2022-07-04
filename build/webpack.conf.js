@@ -168,7 +168,7 @@ const defaultConfig = {
                 // 定义要拷贝的源文件
                 from: './public',
                 // 定义要拷贝到的文件夹
-                to: './images', // 默认指向dist文件夹
+                to: './public', // 默认指向dist文件夹
                 // 排除  指定不需要复制的文件
                 ignore: ['*.html']
             }
