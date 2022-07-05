@@ -16,6 +16,16 @@
                     ]
                 }
             }
-        ]
+        ],
+        "stage-2"
     ]
+    // 识别import
+    // 识别es6语法
+    // 版本不同，启动报错
+    // "plugin": [
+    //     // "babel-plugin-syntax-dynamic-import",
+    //     "transform-runtime",
+    //     "babel-plugin-transform-regenerator",
+    //     "babel-plugin-transform-es2015-modules-commonjs"
+    // ]
 }
