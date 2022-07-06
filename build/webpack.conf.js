@@ -189,7 +189,7 @@ const defaultConfig = {
             minSize: 30000,  // 表示在压缩前的最小模块大小, 默认值是30kb 大于30kb才会抽取
             // 缓存分组
             // 公共文件缓存的配置
-            cacheGroup: {
+            cacheGroups: {
                 // 打包后的 dist 文件内，会生成 common.js 和 vendor.js 文件，此时包被拆开。之后，若公共模块代码未修改，则不会被再次打包
                 // 第三方模块
                 vendor: {
