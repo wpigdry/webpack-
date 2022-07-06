@@ -156,6 +156,8 @@ const defaultConfig = {
                 removeEmptyAttributes: true, // 删除所有具有纯空格值的属性
                 removeOptionalTags: true // 删除可选标签-- 它只去除 HTML、HEAD、BODY、THEAD、TBODY 和 TFOOT 元素的结束标签。 例如：只有末尾 </head>
             },
+            // chunks表示该入口文件需要引入哪些chunk  公共的会抽离出去，（不会再次进行打包），不引入则使用不了该代码块
+            chunks: ['vendor', 'common']
         }),
         new VuePlugin(),
         new MiniCssExtractPlugin({
@@ -173,7 +175,43 @@ const defaultConfig = {
                 ignore: ['*.html']
             }
         ])
-    ]
+    ],
+    optimization: {
+        //生成chunki的地方,定义了2个chunk名字,即common和vendor
+        //分割代码块
+        splitChunks: {
+            /**
+             * all: 全部chunk  -- 全部公共代码块都处理
+             * initial: 入口chunk，对于异步导入的文件不处理
+             * async: 异步chunk，只对异步导入的文件处理
+             */
+            chunks: 'all',
+            minSize: 30000,  // 表示在压缩前的最小模块大小, 默认值是30kb 大于30kb才会抽取
+            // 缓存分组
+            // 公共文件缓存的配置
+            cacheGroup: {
+                // 打包后的 dist 文件内，会生成 common.js 和 vendor.js 文件，此时包被拆开。之后，若公共模块代码未修改，则不会被再次打包
+                // 第三方模块
+                vendor: {
+                    name: 'vendor', // chunk名称  也是打包后的文件名称
+                    // 值越大优先级越高
+                    priority: 1, // 优先级，先抽离公共的第三方库，再抽离业务代码，值越大优先级越高
+                    test: /[\\/]node_modules[\\/]/, // 在node_modules范围内进行匹配
+                    minSize: 0, // 模块大小限制 大于0个字节才会抽取
+                    minChunks: 1, // 最少复用几次，若引入1次后，即对它抽离
+                    reuseExistingChunk: true, //  如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
+                    enforce: true  // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
+                },
+                // 公共模块
+                common: {
+                    name: 'common', // chunk名称  也是打包后的文件名称
+                    priority: 0, // 优先级
+                    minSize: 0, // 公共模块大小限制
+                    minChunks: 2 // 公共模块最少复用2次才会进行抽离
+                }
+            }
+        }
+    }
 }
 
 module.exports = env => {
