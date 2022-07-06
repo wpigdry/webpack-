@@ -177,7 +177,10 @@ const defaultConfig = {
         ])
     ],
     optimization: {
-        //生成chunki的地方,定义了2个chunk名字,即common和vendor
+        //生成chunk的地方,定义了2个chunk名字,即common和vendor, 如有需要，还可以分的更加详细，
+        // 比如说把echarts单独抽离，test: /[\/]node_modules[\/]echarts[\/]/,
+        // 但是第三方包单独抽离，则抽离权重要大于vendor专用于抽离的chunk，防止该包抽离两次，
+        // common也一样，不过common内部应该不用单独抽离
         //分割代码块
         splitChunks: {
             /**
@@ -202,10 +205,11 @@ const defaultConfig = {
                     reuseExistingChunk: true, //  如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
                     enforce: true  // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
                 },
-                // 公共模块
+                // 公共模块   (业务代码)
                 common: {
                     name: 'common', // chunk名称  也是打包后的文件名称
-                    priority: 0, // 优先级
+                    // 先抽离公共的第三方库，再抽离业务代码
+                    priority: 0, // 优先级 因为业务代码会引用第三方包，防止第三方包多次抽离
                     minSize: 0, // 公共模块大小限制
                     minChunks: 2 // 公共模块最少复用2次才会进行抽离
                 }
