@@ -10,6 +10,7 @@
         // 执行build命令关联webpack.conf.js，从而执行文件中的打包命令进行打包
         // build 的值为运行的脚本 ---  比如 npm run build 相当于终端执行webpack
         // --config  配置   指向 =》 build/webpack.conf.js（配置指向的文件）
+    // 项目打包成静态资源
     "build": "webpack --config build/webpack.conf.js",
 
     // 配置启动服务配置  执行webpack-dev-server命令启动服务
